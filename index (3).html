@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#4b1727">
+  <meta name="description" content="ARJ-FLASK-CRAFT — layanan proyek Flask beserta dokumen penjelasan lengkap. Mulai Rp6.000.">
+  <title>ARJ-FLASK-CRAFT — Proyek Flask & Dokumentasi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #10172b;
+      --ink-soft: #24304a;
+      --muted: #69748a;
+      --paper: #f7f8fc;
+      --white: #ffffff;
+      --line: #e8ebf3;
+      --mint: #a8f0d2;
+      --mint-deep: #16866d;
+      --lime: #d9ff74;
+      --violet: #a897ff;
+      --shadow: 0 24px 80px rgba(24, 34, 63, .12);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(247,248,252,.84); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(232,235,243,.85);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 78px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 850; letter-spacing: -.045em; font-size: 1.15rem; }
+    .brand-mark {
+      display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px;
+      color: var(--ink); background: var(--lime); box-shadow: 0 6px 18px rgba(185,220,73,.27);
+    }
+    .brand-mark svg { width: 23px; height: 23px; }
+    .brand small { display: block; color: var(--muted); font-weight: 650; font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; margin-top: -3px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: #576176; font-weight: 650; font-size: .91rem; }
+    .nav-links a:hover { color: var(--ink); }
+    .btn {
+      min-height: 48px; display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      padding: 0 20px; border: 0; border-radius: 14px; font-weight: 800; font-size: .94rem;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-dark { color: white; background: var(--ink); box-shadow: 0 10px 24px rgba(16,23,43,.17); }
+    .btn-dark:hover { background: #202b48; box-shadow: 0 14px 30px rgba(16,23,43,.22); }
+    .btn-lime { background: var(--lime); color: var(--ink); box-shadow: 0 10px 28px rgba(217,255,116,.18); }
+    .btn-lime:hover { background: #e4ff9a; box-shadow: 0 14px 32px rgba(217,255,116,.28); }
+    .btn svg { width: 17px; height: 17px; }
+    .menu-toggle { display:none; border: 1px solid var(--line); background: white; border-radius: 12px; padding: 10px; color: var(--ink); }
+
+    .hero {
+      position: relative; overflow: hidden; padding: 76px 0 86px;
+      background: radial-gradient(circle at 78% 18%, rgba(168,240,210,.35), transparent 26%),
+                  radial-gradient(circle at 10% 82%, rgba(168,151,255,.15), transparent 30%), var(--paper);
+    }
+    .hero::before {
+      content: ""; position: absolute; width: 510px; height: 510px; border: 1px solid rgba(22,134,109,.10);
+      border-radius: 50%; right: -170px; top: -255px; box-shadow: 0 0 0 42px rgba(22,134,109,.025), 0 0 0 85px rgba(22,134,109,.02);
+      pointer-events: none;
+    }
+    .hero-grid { position: relative; display: grid; grid-template-columns: 1.04fr .96fr; gap: 54px; align-items: center; }
+    .eyebrow { display: inline-flex; gap: 9px; align-items: center; padding: 8px 12px; border-radius: 999px; border: 1px solid #dcefe7; background: rgba(255,255,255,.72); color: #26745f; font-size: .78rem; font-weight: 800; letter-spacing: .035em; }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 100%; background: #22b88a; box-shadow: 0 0 0 4px rgba(34,184,138,.12); }
+    h1 { margin: 22px 0 20px; max-width: 640px; font-size: clamp(2.6rem, 5.4vw, 4.75rem); line-height: 1.035; letter-spacing: -.075em; font-weight: 900; }
+    h1 .highlight { position: relative; display: inline-block; z-index: 0; white-space: nowrap; }
+    h1 .highlight::after { content: ""; position: absolute; z-index: -1; left: -2px; right: -5px; bottom: 4px; height: 36%; background: var(--lime); border-radius: 7px; transform: rotate(-1.5deg); }
+    .hero-copy { max-width: 550px; color: var(--muted); font-size: 1.08rem; line-height: 1.85; margin: 0 0 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .micro-note { display: flex; gap: 10px; align-items: center; color: #7b8496; font-size: .81rem; margin-top: 20px; }
+    .micro-note svg { color: var(--mint-deep); width: 17px; flex: 0 0 17px; }
+    .hero-art { position: relative; min-width: 0; padding: 16px 10px 22px 20px; }
+    .orb { position: absolute; width: 110px; height: 110px; border-radius: 34px; top: -8px; right: 8px; background: var(--violet); transform: rotate(16deg); opacity: .8; }
+    .orb::after { content: ""; position: absolute; inset: 23px; border: 2px solid rgba(255,255,255,.65); border-radius: 24px; }
+    .browser {
+      position: relative; z-index: 1; background: white; border: 1px solid rgba(220,225,237,.95); border-radius: 23px;
+      overflow: hidden; box-shadow: 0 30px 85px rgba(20,34,65,.15); transform: rotate(1.4deg);
+    }
+    .browser-head { height: 52px; display:flex; align-items:center; gap: 7px; padding: 0 17px; border-bottom: 1px solid #edf0f5; background: #fbfcfe; }
+    .window-dot { width: 8px; height: 8px; border-radius: 50%; background: #d6dbe6; }
+    .window-dot:first-child { background:#ff9f91; } .window-dot:nth-child(2) { background:#ffd66d; } .window-dot:nth-child(3) { background:#8bddb5; }
+    .browser-address { margin-left: 10px; border-radius: 7px; padding: 5px 12px; background: #f0f2f7; color: #8a93a5; font-size: .67rem; flex: 1; }
+    .browser-body { padding: 24px; }
+    .code-top { display:flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .mini-brand { display: flex; gap: 9px; align-items: center; font-weight: 850; letter-spacing: -.04em; font-size: .9rem; }
+    .mini-icon { display:grid; place-items:center; width:30px; height:30px; background:var(--lime); border-radius:9px; font-size:.9rem; }
+    .status { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 5px 9px; background: #e9faf3; color:#258366; font-size:.62rem; font-weight:800; }
+    .status::before { content:""; width:5px; height:5px; border-radius:50%; background:#23bb88; }
+    .preview-title { margin: 25px 0 7px; font-size: 1.52rem; font-weight: 900; letter-spacing: -.06em; line-height:1.15; }
+    .preview-desc { margin: 0; max-width: 330px; color:#80899b; font-size:.76rem; line-height:1.7; }
+    .code-window { margin-top: 22px; border-radius: 15px; background: #111a2d; padding: 15px 16px 17px; color:#e9f0ff; box-shadow: 0 12px 25px rgba(16,23,43,.16); }
+    .code-window-head { display:flex; justify-content:space-between; color:#9ca8bf; font-size:.64rem; margin-bottom:12px; }
+    .code-line { display:flex; gap:13px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.7rem; line-height:1.9; white-space:nowrap; }
+    .line-no { color:#596783; width:12px; text-align:right; }
+    .code-purple { color:#baaaff; } .code-green { color:#a8f0d2; } .code-yellow { color:#ffe08a; } .code-muted { color:#98a8c6; }
+    .preview-pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+    .preview-pills span { border:1px solid #e6eaf2; background:#fff; color:#566177; border-radius:8px; padding:6px 9px; font-size:.65rem; font-weight:750; }
+    .float-card { position:absolute; z-index:2; bottom:0; left:-4px; padding:13px 16px; display:flex; align-items:center; gap:11px; background:white; border:1px solid #edf0f5; border-radius:16px; box-shadow: 0 16px 40px rgba(20,34,65,.13); transform: rotate(-3deg); }
+    .float-icon { display:grid; place-items:center; width:36px; height:36px; border-radius:11px; background:#e7fbf2; color:#248c6c; font-weight:900; }
+    .float-card strong { display:block; font-size:.79rem; letter-spacing:-.02em; }
+    .float-card span { color:#7b8598; display:block; font-size:.67rem; margin-top:1px; }
+    .price-bubble { position:absolute; top:52%; right:-9px; z-index:3; background:var(--lime); width:94px; height:94px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; box-shadow:0 15px 30px rgba(128,151,56,.22); transform:rotate(8deg); }
+    .price-bubble small { font-size:.58rem; font-weight:800; } .price-bubble strong { font-size:1.18rem; letter-spacing:-.06em; line-height:1.25; }
+    .proof-strip { border-block:1px solid var(--line); background:#fff; }
+    .proof-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+    .proof-item { display:flex; align-items:center; justify-content:center; gap:12px; padding:23px 12px; color:#566176; font-size:.87rem; font-weight:750; }
+    .proof-item + .proof-item { border-left:1px solid var(--line); }
+    .proof-icon { display:grid; place-items:center; width:36px; height:36px; border-radius:12px; background:#f1f4fb; color:#293754; flex-shrink:0; }
+    .proof-icon svg { width:18px; height:18px; }
+
+    section.content-section { padding: 93px 0; }
+    .section-heading { max-width: 650px; margin: 0 auto 42px; text-align:center; }
+    .kicker { color:#278365; font-weight:850; letter-spacing:.13em; font-size:.72rem; text-transform:uppercase; }
+    h2 { font-size: clamp(2rem, 4vw, 3.1rem); line-height:1.1; letter-spacing:-.065em; margin:12px 0 15px; font-weight:900; }
+    .section-heading p { color:var(--muted); margin:0; font-size:1rem; line-height:1.8; }
+    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:17px; }
+    .feature-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:27px 25px 28px; transition: transform .2s, box-shadow .2s; }
+    .feature-card:hover { transform:translateY(-4px); box-shadow:0 18px 45px rgba(20,34,65,.07); }
+    .feature-icon { width:48px; height:48px; display:grid; place-items:center; border-radius:15px; margin-bottom:20px; }
+    .feature-icon svg { width:24px; height:24px; }
+    .feature-card:nth-child(1) .feature-icon { background:#e3faf0; color:#16866d; }
+    .feature-card:nth-child(2) .feature-icon { background:#eeeaff; color:#6857d8; }
+    .feature-card:nth-child(3) .feature-icon { background:#fff2d8; color:#a96b0e; }
+    .feature-card h3 { margin:0 0 9px; font-size:1.08rem; letter-spacing:-.035em; }
+    .feature-card p { color:var(--muted); font-size:.89rem; margin:0; line-height:1.8; }
+
+    .process { background:#11192d; color:white; overflow:hidden; position:relative; }
+    .process::after { content:""; position:absolute; width:440px; height:440px; right:-180px; bottom:-260px; border:1px solid rgba(217,255,116,.17); border-radius:50%; box-shadow:0 0 0 40px rgba(217,255,116,.03),0 0 0 80px rgba(217,255,116,.025); }
+    .process .kicker { color:var(--mint); }
+    .process .section-heading p { color:#a9b3c8; }
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; position:relative; z-index:1; }
+    .step-card { border:1px solid rgba(223,232,255,.13); border-radius:20px; padding:24px; background:rgba(255,255,255,.035); }
+    .step-number { width:37px; height:37px; display:grid; place-items:center; border-radius:12px; background:var(--lime); color:var(--ink); font-weight:900; font-size:.86rem; margin-bottom:22px; }
+    .step-card h3 { margin:0 0 8px; font-size:1.03rem; }
+    .step-card p { margin:0; color:#a9b3c8; font-size:.87rem; line-height:1.75; }
+    .step-card a { color:var(--mint); font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+
+    .offer-section { background:#f0f3fa; }
+    .offer-grid { display:grid; grid-template-columns:1fr .88fr; gap:28px; align-items:stretch; }
+    .offer-copy { padding:21px 10px 20px 0; }
+    .offer-copy h2 { max-width:490px; }
+    .offer-copy p { color:var(--muted); max-width:540px; line-height:1.85; }
+    .check-list { list-style:none; padding:0; margin:24px 0 29px; display:grid; gap:14px; }
+    .check-list li { display:flex; align-items:flex-start; gap:11px; color:#35415b; font-weight:650; font-size:.91rem; }
+    .check { flex:0 0 22px; height:22px; display:grid; place-items:center; border-radius:50%; background:#dcf8eb; color:#218263; margin-top:1px; }
+    .check svg { width:13px; height:13px; }
+    .price-card { background:var(--ink); border-radius:26px; color:white; padding:31px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+    .price-card::after { content:""; position:absolute; width:200px; height:200px; right:-78px; top:-105px; border-radius:50%; border:1px solid rgba(217,255,116,.34); box-shadow:0 0 0 23px rgba(217,255,116,.035),0 0 0 47px rgba(217,255,116,.025); }
+    .price-label { color:#b6c0d4; text-transform:uppercase; letter-spacing:.12em; font-size:.72rem; font-weight:850; position:relative; }
+    .price-amount { display:flex; align-items:baseline; flex-wrap:wrap; gap:7px; margin:15px 0 8px; position:relative; }
+    .price-amount span { font-size:1.08rem; color:#c8d1e1; font-weight:750; }
+    .price-amount strong { font-size:3.6rem; letter-spacing:-.08em; line-height:1; }
+    .price-desc { color:#a9b4c9; font-size:.86rem; line-height:1.7; margin:0 0 23px; position:relative; }
+    .price-card .btn { width:100%; position:relative; z-index:1; }
+    .price-foot { color:#919db5; text-align:center; font-size:.72rem; margin:14px 0 0; }
+    .included { list-style:none; margin:21px 0 25px; padding:0; display:grid; gap:12px; position:relative; }
+    .included li { display:flex; gap:10px; align-items:flex-start; color:#e1e7f1; font-size:.88rem; }
+    .included svg { width:16px; height:16px; color:var(--mint); flex-shrink:0; margin-top:4px; }
+
+    .promise-wrap { padding: 62px 0; }
+    .promise-box { display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:start; padding:28px 30px; border-radius:22px; border:1px solid #f0dcaa; background:#fffaf0; }
+    .promise-icon { width:46px; height:46px; display:grid; place-items:center; border-radius:15px; background:#ffedc5; color:#986412; }
+    .promise-icon svg { width:23px; height:23px; }
+    .promise-box h3 { margin:0 0 7px; font-size:1.06rem; letter-spacing:-.03em; }
+    .promise-box p { color:#76684c; margin:0; font-size:.9rem; line-height:1.8; }
+    .promise-box strong { color:#473b22; }
+
+    .faq-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:60px; align-items:start; }
+    .faq-intro p { color:var(--muted); line-height:1.85; }
+    .faq-list { display:grid; gap:12px; }
+    details { border:1px solid var(--line); border-radius:16px; background:#fff; padding:18px 20px; }
+    summary { font-weight:800; list-style:none; display:flex; gap:18px; align-items:center; justify-content:space-between; cursor:pointer; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:"+"; display:grid; place-items:center; color:#68748a; border:1px solid var(--line); border-radius:9px; width:27px; height:27px; flex-shrink:0; font-size:1.1rem; font-weight:600; }
+    details[open] summary::after { content:"−"; }
+    details p { color:var(--muted); margin:13px 0 0; line-height:1.8; font-size:.9rem; }
+
+    .final-cta { padding: 12px 0 92px; }
+    .cta-panel { border-radius:28px; background:var(--lime); padding:49px; display:flex; justify-content:space-between; align-items:center; gap:25px; overflow:hidden; position:relative; }
+    .cta-panel::after { content:""; position:absolute; right:23%; top:-130px; width:250px; height:250px; border-radius:50%; border:1px solid rgba(16,23,43,.13); box-shadow:0 0 0 30px rgba(16,23,43,.035),0 0 0 60px rgba(16,23,43,.025); }
+    .cta-text { max-width:580px; position:relative; z-index:1; }
+    .cta-text h2 { font-size:clamp(1.8rem,3.5vw,2.7rem); margin:0 0 11px; }
+    .cta-text p { margin:0; color:#48542a; line-height:1.8; }
+    .cta-panel .btn { position:relative; z-index:1; flex-shrink:0; background:var(--ink); color:white; }
+    .cta-panel .btn:hover { background:#25304a; }
+    footer { background:#10172b; color:#a6b0c4; padding:33px 0; }
+    .footer-row { display:flex; align-items:center; justify-content:space-between; gap:25px; }
+    footer .brand { color:#fff; }
+    footer .brand small { color:#9ea9bf; }
+    .footer-note { font-size:.78rem; text-align:right; }
+    .footer-note a { color:var(--mint); text-decoration:underline; text-underline-offset:3px; }
+    .copyright { margin-top:23px; padding-top:20px; border-top:1px solid rgba(255,255,255,.1); font-size:.73rem; color:#78859f; }
+
+    @media (max-width: 920px) {
+      .hero-grid { grid-template-columns:1fr; gap:38px; }
+      .hero-copy { max-width:680px; }
+      .hero-art { width:min(620px,100%); margin-inline:auto; }
+      .features-grid { grid-template-columns:1fr 1fr; }
+      .feature-card:last-child { grid-column:1 / -1; }
+      .offer-grid { grid-template-columns:1fr; gap:8px; }
+      .offer-copy { padding:0; }
+      .price-card { max-width:620px; width:100%; margin-inline:auto; }
+      .faq-grid { grid-template-columns:1fr; gap:23px; }
+    }
+    @media (max-width: 660px) {
+      .wrap { width:min(100% - 30px, 1160px); }
+      .nav { min-height:68px; }
+      .nav-links { display:none; position:absolute; top:68px; left:15px; right:15px; flex-direction:column; align-items:stretch; gap:0; padding:10px; border:1px solid var(--line); border-radius:16px; background:white; box-shadow:var(--shadow); }
+      .nav-links.open { display:flex; }
+      .nav-links a:not(.btn) { padding:12px 10px; }
+      .nav-links .btn { margin-top:6px; }
+      .menu-toggle { display:inline-flex; align-items:center; justify-content:center; }
+      .nav > .btn { display:none; }
+      .hero { padding:52px 0 61px; }
+      h1 { font-size:clamp(2.55rem,13vw,4rem); }
+      .hero-copy { font-size:1rem; }
+      .hero-actions { align-items:stretch; flex-direction:column; }
+      .hero-actions .btn { width:100%; }
+      .hero-art { padding:10px 3px 21px; }
+      .browser-body { padding:18px; }
+      .preview-title { font-size:1.28rem; }
+      .code-line { font-size:.61rem; gap:8px; }
+      .price-bubble { width:76px; height:76px; right:-5px; top:51%; }
+      .price-bubble strong { font-size:1rem; }
+      .float-card { left:-2px; padding:10px 12px; }
+      .proof-grid { grid-template-columns:1fr; padding:5px 0; }
+      .proof-item { justify-content:flex-start; padding:12px 6px; }
+      .proof-item + .proof-item { border-left:0; border-top:1px solid var(--line); }
+      section.content-section { padding:68px 0; }
+      .section-heading { margin-bottom:30px; }
+      .features-grid, .steps { grid-template-columns:1fr; }
+      .feature-card:last-child { grid-column:auto; }
+      .step-card { padding:21px; }
+      .price-card { padding:25px 22px; }
+      .price-amount strong { font-size:3.1rem; }
+      .promise-wrap { padding:45px 0; }
+      .promise-box { grid-template-columns:1fr; padding:22px; gap:13px; }
+      .cta-panel { padding:29px 23px; flex-direction:column; align-items:stretch; }
+      .cta-panel .btn { width:100%; }
+      .footer-row { align-items:flex-start; flex-direction:column; }
+      .footer-note { text-align:left; }
+      .final-cta { padding-bottom:66px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { transition:none !important; animation:none !important; }
+    }
+
+
+    /* Renaissance Catholic visual treatment: parchment, wine red, antique gold, and classical serif. */
+    :root {
+      color-scheme: light;
+      --ink: #351923;
+      --ink-soft: #56313a;
+      --muted: #766356;
+      --paper: #f4ead6;
+      --white: #fffaf0;
+      --line: #ddc9a5;
+      --mint: #ead9ad;
+      --mint-deep: #7d243a;
+      --lime: #d8b36a;
+      --violet: #743048;
+      --shadow: 0 24px 80px rgba(68, 32, 34, .16);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+    }
+    body {
+      background-color: var(--paper);
+      background-image: radial-gradient(ellipse at top, rgba(255,250,240,.75), transparent 55%),
+                        repeating-linear-gradient(0deg, rgba(110,78,45,.018) 0, rgba(110,78,45,.018) 1px, transparent 1px, transparent 5px);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .topbar { background: rgba(248,239,220,.92); border-bottom: 1px solid #c9ad78; }
+    .brand { font-family: Georgia, "Times New Roman", serif; letter-spacing: -.025em; font-size: 1.05rem; color: #4b1727; }
+    .brand small { color: #8b6a42; letter-spacing: .14em; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .58rem; }
+    .brand-mark { width: 40px; height: 40px; border-radius: 50%; background: #4b1727; color: #e7c880; border: 1px solid #c7a459; box-shadow: inset 0 0 0 3px #4b1727, inset 0 0 0 4px rgba(231,200,128,.65), 0 6px 18px rgba(75,23,39,.18); }
+    .nav-links { color: #725543; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .nav-links a:hover { color: #7d243a; }
+    .btn { border-radius: 3px; text-transform: none; letter-spacing: .015em; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .btn-dark { color: #fff5df; background: #4b1727; box-shadow: 0 10px 24px rgba(75,23,39,.19); border: 1px solid #8b5b43; }
+    .btn-dark:hover { background: #67263a; }
+    .btn-lime { background: linear-gradient(135deg, #edd49a, #c99c4f); color: #401c27; box-shadow: 0 9px 22px rgba(154,109,43,.18); border: 1px solid #b88b43; }
+    .btn-lime:hover { background: linear-gradient(135deg, #f3dfad, #d7ad61); }
+    .hero {
+      background: radial-gradient(circle at 80% 20%, rgba(201,156,79,.21), transparent 28%),
+                  radial-gradient(circle at 8% 82%, rgba(110,35,57,.09), transparent 32%), var(--paper);
+      border-bottom: 1px solid #e1cfad;
+    }
+    .hero::before { border-color: rgba(125,36,58,.18); box-shadow: 0 0 0 42px rgba(125,36,58,.035), 0 0 0 85px rgba(125,36,58,.025); }
+    .eyebrow { border-radius: 3px; border-color: #d7bc84; background: rgba(255,250,240,.82); color: #7d243a; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .eyebrow-dot { background: #ba8b3e; box-shadow: 0 0 0 4px rgba(186,139,62,.14); }
+    h1, h2, h3, .preview-title { font-family: Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
+    h1 { font-weight: 700; }
+    h1 .highlight::after { background: linear-gradient(90deg, rgba(216,179,106,.78), rgba(216,179,106,.42)); border-radius: 0; transform: rotate(-1deg); }
+    .hero-copy { color: #6f5d51; }
+    .micro-note { color: #7a6759; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .micro-note svg { color: #8b622e; }
+    .orb { width: 118px; height: 118px; border-radius: 50%; background: #7d243a; border: 1px solid #bf9a5a; opacity: .88; }
+    .orb::after { border-radius: 50%; border-color: rgba(243,222,177,.72); }
+    .browser { background: #fffaf0; border-color: #cdb582; border-radius: 8px; box-shadow: 0 30px 85px rgba(68,32,34,.2); }
+    .browser-head { background: #eee0c4; border-bottom-color: #d8c49b; }
+    .browser-address { background: #f8f0df; color: #8b7359; }
+    .browser-body { background: linear-gradient(145deg, #fffaf0, #f7ebd5); }
+    .mini-brand { color: #4b1727; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .mini-icon { background: #d8b36a; color: #4b1727; border-radius: 50%; }
+    .status { background: #f4e4c0; color: #76501b; border: 1px solid #dfc28a; }
+    .status::before { background: #b78a3b; }
+    .preview-title { font-weight: 700; color: #4b1727; }
+    .preview-desc { color: #806d5b; }
+    .code-window { background: #351923; border: 1px solid #89684b; border-radius: 4px; box-shadow: 0 12px 25px rgba(53,25,35,.2); }
+    .code-green { color: #e8d29a; }
+    .code-yellow { color: #e7b974; }
+    .code-purple { color: #d9a8b2; }
+    .preview-pills span { border-color: #ddc9a5; background: #fffaf0; color: #6b4a3e; border-radius: 3px; }
+    .float-card { background: #fffaf0; border-color: #d9c49a; border-radius: 5px; }
+    .float-icon { background: #f0dfb7; color: #7d243a; border-radius: 50%; }
+    .float-card span { color: #856f5b; }
+    .price-bubble { background: #d8b36a; color: #421b29; border: 1px solid #a67a3a; box-shadow: 0 15px 30px rgba(128,91,41,.2); }
+    .proof-strip { border-color: #d9c49a; background: #fff8e9; }
+    .proof-item { color: #6d5243; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .proof-item + .proof-item { border-left-color: #e0cfac; }
+    .proof-icon { border-radius: 50%; background: #f0dfbd; color: #6e2538; }
+    .kicker { color: #8a5a27; font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: .16em; }
+    .section-heading p, .feature-card p, .offer-copy p, .faq-intro p { color: #786657; }
+    .feature-card { background: rgba(255,250,240,.88); border-color: #dfcba6; border-radius: 4px; box-shadow: 0 8px 22px rgba(79,43,33,.035); }
+    .feature-card:hover { box-shadow: 0 18px 45px rgba(79,43,33,.12); }
+    .feature-icon { border-radius: 50%; }
+    .feature-card:nth-child(1) .feature-icon { background: #f0dfbd; color: #7d243a; }
+    .feature-card:nth-child(2) .feature-icon { background: #ead5d9; color: #6b2238; }
+    .feature-card:nth-child(3) .feature-icon { background: #f4e6bf; color: #946722; }
+    .process { background: #351923; border-block: 1px solid #a88349; }
+    .process::after { border-color: rgba(216,179,106,.3); box-shadow: 0 0 0 40px rgba(216,179,106,.035),0 0 0 80px rgba(216,179,106,.025); }
+    .process .kicker { color: #d8b36a; }
+    .process .section-heading p { color: #ddcbb5; }
+    .step-card { border-color: rgba(224,194,141,.24); border-radius: 4px; background: rgba(255,250,240,.045); }
+    .step-number { background: #d8b36a; color: #351923; border-radius: 50%; }
+    .step-card p { color: #ddcbb5; }
+    .step-card a { color: #e8cf94; }
+    .offer-section { background: #eee0c4; border-block: 1px solid #ddc9a5; }
+    .check-list li { color: #563b32; }
+    .check { background: #ead8ad; color: #77283d; }
+    .price-card { background: linear-gradient(145deg, #4b1727, #2e1721); border: 1px solid #a88349; border-radius: 5px; box-shadow: 0 24px 50px rgba(68,32,34,.2); }
+    .price-card::after { border-color: rgba(216,179,106,.4); box-shadow: 0 0 0 23px rgba(216,179,106,.035),0 0 0 47px rgba(216,179,106,.025); }
+    .price-label { color: #e0cda7; }
+    .price-amount strong { color: #fff1d2; }
+    .price-desc { color: #ddcbb5; }
+    .included li { color: #f4e8d6; }
+    .included svg { color: #e5c982; }
+    .price-foot { color: #c4ad9e; }
+    .promise-box { border: 1px solid #c8a96c; background: #fff4d9; border-radius: 4px; box-shadow: inset 0 0 0 5px rgba(200,169,108,.09); }
+    .promise-icon { border-radius: 50%; background: #ead5a4; color: #7d243a; }
+    .promise-box p { color: #735742; }
+    .promise-box strong { color: #4b1727; }
+    details { border-color: #ddc9a5; border-radius: 4px; background: #fffaf0; }
+    summary::after { border-color: #d9c49a; color: #7d243a; border-radius: 2px; }
+    details p { color: #786657; }
+    .cta-panel { border-radius: 4px; background: linear-gradient(125deg, #e7cd91, #d4ab5f); border: 1px solid #b58a45; box-shadow: 0 16px 40px rgba(91,55,28,.09); }
+    .cta-text p { color: #5b3e2c; }
+    footer { background: #2c151e; color: #d3bfa5; border-top: 3px double #a88349; }
+    footer .brand { color: #fff0d4; }
+    footer .brand small { color: #d8b36a; }
+    .footer-note a { color: #e8ce90; }
+    .copyright { border-top-color: rgba(216,179,106,.24); color: #b49c87; }
+
+    .scripture-section { padding: 82px 0 88px; position: relative; overflow: hidden; background: #ead9b8; border-bottom: 1px solid #d5bd8e; }
+    .scripture-section::before, .scripture-section::after { content: "✦"; position: absolute; color: rgba(125,36,58,.12); font-size: 11rem; line-height: 1; pointer-events: none; }
+    .scripture-section::before { left: -20px; top: -25px; }
+    .scripture-section::after { right: -20px; bottom: -45px; }
+    .scripture-heading { text-align: center; max-width: 760px; margin: 0 auto 34px; position: relative; z-index: 1; }
+    .scripture-heading .kicker { display: inline-block; color: #7b263d; }
+    .scripture-heading h2 { color: #4b1727; margin: 11px 0 12px; }
+    .scripture-heading p { color: #775d48; margin: 0; line-height: 1.8; }
+    .scripture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; position: relative; z-index: 1; }
+    .scripture-card { padding: 31px 32px 29px; text-align: center; background: rgba(255,250,240,.78); border: 1px solid #bd9858; outline: 1px solid rgba(189,152,88,.4); outline-offset: 5px; box-shadow: 0 18px 40px rgba(78,42,32,.08); position: relative; }
+    .scripture-card::before, .scripture-card::after { content: ""; position: absolute; width: 25px; height: 25px; border-color: #9d7136; border-style: solid; pointer-events: none; }
+    .scripture-card::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+    .scripture-card::after { right: 8px; bottom: 8px; border-width: 0 1px 1px 0; }
+    .scripture-ornament { color: #9a7035; font-size: 1.5rem; margin-bottom: 7px; }
+    .scripture-reference { color: #7d243a; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .75rem; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; }
+    .scripture-card blockquote { color: #4b342d; margin: 17px 0 13px; font-size: 1.11rem; line-height: 1.95; font-style: italic; }
+    .ornamental-rule { display: flex; justify-content: center; align-items: center; gap: 12px; color: #a47c3b; }
+    .ornamental-rule::before, .ornamental-rule::after { content: ""; width: 55px; height: 1px; background: #c9ab75; }
+    @media (max-width: 760px) {
+      .scripture-grid { grid-template-columns: 1fr; gap: 18px; }
+      .scripture-section { padding: 64px 0 70px; }
+      .scripture-card { padding: 27px 22px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#beranda" aria-label="ARJ-FLASK-CRAFT, beranda">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6.2l-5.2 8.4A2.2 2.2 0 0 0 6.7 21h10.6a2.2 2.2 0 0 0 1.9-3.4L14 9.2V3"/><path d="M7.5 15h9"/></svg>
+        </span>
+        <span>ARJ-FLASK-CRAFT<small>ANJELA-RINA-JASON</small></span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Navigasi utama">
+        <a href="#pujian">Pujian</a>
+        <a href="#layanan">Yang didapat</a>
+        <a href="#cara-pesan">Cara pesan</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-dark" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Pesan sekarang <span aria-hidden="true">↗</span></a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Buka navigasi" aria-expanded="false" aria-controls="navLinks">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a class="btn btn-dark" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Pesan <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="wrap hero-grid">
+        <div class="hero-content">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> BANTUAN PROYEK FLASK • PAKET PELAJAR</div>
+          <h1>Proyek Flask jadi lebih <span class="highlight">terarah.</span></h1>
+          <p class="hero-copy">Butuh bantuan untuk tugas Flask dari Pak Herman? Dapatkan paket aplikasi beserta dokumen penjelasan lengkap, supaya kamu punya bahan yang terstruktur untuk dipelajari dan dipahami.</p>
+          <div class="hero-actions">
+            <a class="btn btn-dark" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Isi formulir pemesanan <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></a>
+            <a class="btn btn-lime" href="#layanan">Lihat detail paket <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="micro-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="10"/></svg>
+            Harga mulai Rp6.000 • Detail pesanan dikonfirmasi melalui formulir
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Ilustrasi antarmuka proyek Flask">
+          <div class="orb" aria-hidden="true"></div>
+          <div class="browser">
+            <div class="browser-head"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><div class="browser-address">localhost:5000 / project</div></div>
+            <div class="browser-body">
+              <div class="code-top"><div class="mini-brand"><span class="mini-icon">✳</span> Flask Project</div><span class="status">PROJECT READY</span></div>
+              <div class="preview-title">Proyek Flask<br>dan dokumentasi.</div>
+              <p class="preview-desc">Paket aplikasi yang telah dibuat, disertai dokumen penjelasan lengkap sesuai rincian pesanan.</p>
+              <div class="code-window">
+                <div class="code-window-head"><span>app.py</span><span>Python · Flask</span></div>
+                <div class="code-line"><span class="line-no">1</span><span><span class="code-purple">from</span> flask <span class="code-purple">import</span> Flask</span></div>
+                <div class="code-line"><span class="line-no">2</span><span>app = Flask(<span class="code-green">__name__</span>)</span></div>
+                <div class="code-line"><span class="line-no">3</span><span></span></div>
+                <div class="code-line"><span class="line-no">4</span><span><span class="code-yellow">@app.route</span>(<span class="code-green">'/'</span>)</span></div>
+                <div class="code-line"><span class="line-no">5</span><span><span class="code-purple">def</span> <span class="code-yellow">home</span>():</span></div>
+                <div class="code-line"><span class="line-no">6</span><span>&nbsp;&nbsp;<span class="code-purple">return</span> <span class="code-green">'Hello, Flask!'</span></span></div>
+              </div>
+              <div class="preview-pills"><span>✓ Aplikasi</span><span>✓ Dokumentasi</span><span>✓ Penjelasan</span></div>
+            </div>
+          </div>
+          <div class="float-card"><div class="float-icon">✓</div><div><strong>Lebih terstruktur</strong><span>Kode + dokumen penjelasan</span></div></div>
+          <div class="price-bubble"><small>MULAI DARI</small><strong>Rp6rb</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="proof-strip">
+      <div class="wrap proof-grid">
+        <div class="proof-item"><span class="proof-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>Dokumen penjelasan lengkap</span></div>
+        <div class="proof-item"><span class="proof-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 5-5 7 5 7M16 5l5 7-5 7M14 3l-4 18"/></svg></span><span>Berbasis Python & Flask</span></div>
+        <div class="proof-item"><span class="proof-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span>Mulai dari Rp6.000</span></div>
+      </div>
+    </div>
+
+    <section class="scripture-section" id="pujian" aria-labelledby="scripture-title">
+      <div class="wrap">
+        <div class="scripture-heading">
+          <span class="kicker">Ad Maiorem Dei Gloriam · Demi kemuliaan Allah yang lebih besar</span>
+          <h2 id="scripture-title">Segala pujian bagi Allah</h2>
+          <p>Di atas setiap karya dan usaha, semoga hati tetap mengarahkan pujian kepada Tuhan yang kudus dan agung.</p>
+        </div>
+        <div class="scripture-grid">
+          <article class="scripture-card">
+            <div class="scripture-ornament" aria-hidden="true">✠</div>
+            <div class="scripture-reference">Lukas 1:46–49</div>
+            <blockquote>“Jiwaku memuliakan Tuhan, dan hatiku bergembira karena Allah, Juruselamatku, sebab Ia telah memperhatikan kerendahan hamba-Nya... karena Yang Mahakuasa telah melakukan perbuatan-perbuatan besar kepadaku dan nama-Nya adalah kudus.”</blockquote>
+            <div class="ornamental-rule" aria-hidden="true">✦</div>
+          </article>
+          <article class="scripture-card">
+            <div class="scripture-ornament" aria-hidden="true">✠</div>
+            <div class="scripture-reference">Mazmur 104:1</div>
+            <blockquote>“Pujilah TUHAN, hai jiwaku! TUHAN, Allahku, Engkau sangat besar! Engkau berpakaian keagungan dan semarak.”</blockquote>
+            <div class="ornamental-rule" aria-hidden="true">✦</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="layanan">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="kicker">Dalam satu paket</span>
+          <h2>Bukan cuma aplikasi.<br>Penjelasannya juga ada.</h2>
+          <p>Materi disusun agar isi proyek lebih mudah ditelusuri. Pelajari alurnya, pahami fungsi setiap bagian, dan sesuaikan dengan arahan tugas yang diberikan.</p>
+        </div>
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="m8 13 2.5 2.5L16 10"/></svg></div>
+            <h3>Aplikasi yang sudah dibuat</h3>
+            <p>Paket aplikasi Flask sesuai rincian pesanan yang kamu isi pada formulir, dilengkapi struktur proyek yang rapi.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h7"/></svg></div>
+            <h3>Dokumen penjelasan lengkap</h3>
+            <p>Dokumen pendamping yang menjelaskan tujuan aplikasi, susunan file, fitur, serta gambaran cara kerja proyek.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 16.5h.01"/></svg></div>
+            <h3>Bahan untuk dipelajari</h3>
+            <p>Gunakan kode dan dokumen sebagai bahan belajar. Pastikan kamu memahami fitur serta bisa menjelaskan proyek dengan kata-katamu sendiri.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section process" id="cara-pesan">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="kicker">Mudah dan jelas</span>
+          <h2>Mulai dari formulir.</h2>
+          <p>Isi detail pesanan dengan benar agar kebutuhan proyek dapat dipahami sejak awal.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card"><div class="step-number">01</div><h3>Isi formulir pemesanan</h3><p>Klik tombol pesan dan tuliskan kebutuhan proyek Flask serta informasi yang diminta pada formulir.</p></article>
+          <article class="step-card"><div class="step-number">02</div><h3>Konfirmasi detail dan harga</h3><p>Periksa kembali rincian pesanan. Harga mulai Rp6.000; biaya akhir bergantung pada detail pekerjaan yang disepakati.</p></article>
+          <article class="step-card"><div class="step-number">03</div><h3>Terima aplikasi dan dokumen</h3><p>Setelah detail dan ketentuan disepakati, file akan dikirim melalui cara yang diinformasikan saat pemesanan.</p></article>
+        </div>
+        <div style="text-align:center;margin-top:32px;position:relative;z-index:1">
+          <a class="btn btn-lime" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Mulai pesan sekarang <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section offer-section">
+      <div class="wrap offer-grid">
+        <div class="offer-copy">
+          <span class="kicker">Harga ramah pelajar</span>
+          <h2>Mulai Rp6.000 untuk kebutuhan proyekmu.</h2>
+          <p>Dapatkan gambaran biaya dan detail paket melalui formulir pemesanan. Pastikan kebutuhan yang kamu tuliskan sesuai instruksi tugas agar pesanan bisa diperiksa dengan tepat.</p>
+          <ul class="check-list">
+            <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span><span>Aplikasi Flask sesuai detail pesanan</span></li>
+            <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span><span>Dokumen penjelasan aplikasi</span></li>
+            <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span><span>Rincian pesanan dikonfirmasi lebih dulu</span></li>
+          </ul>
+          <a class="btn btn-dark" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Cek detail lewat formulir <span aria-hidden="true">↗</span></a>
+        </div>
+        <aside class="price-card" aria-label="Informasi harga">
+          <div class="price-label">Harga awal</div>
+          <div class="price-amount"><span>Rp</span><strong>6.000</strong><span>+</span></div>
+          <p class="price-desc">Harga mulai dari enam ribu rupiah. Harga akhir dikonfirmasi berdasarkan detail dan ruang lingkup pesanan.</p>
+          <ul class="included">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Aplikasi/proyek Flask</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Dokumen penjelasan lengkap</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Detail pesanan dicatat melalui formulir</li>
+          </ul>
+          <a class="btn btn-lime" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Pesan paket <span aria-hidden="true">↗</span></a>
+          <p class="price-foot">Tidak ada biaya final yang ditetapkan sebelum detail pesanan diperiksa.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="promise-wrap">
+      <div class="wrap">
+        <div class="promise-box">
+          <div class="promise-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.3 2.3 4.7-4.8"/></svg></div>
+          <div>
+            <h3>Komitmen pembayaran tepat waktu</h3>
+            <p><strong>Kami akan mengirimkan file tugas, tetapi file tidak dapat dibuka kecuali Anda berjanji akan membayar tepat waktu.</strong> Sebelum memesan, pastikan kamu memahami ketentuan pembayaran dan menyetujui waktu pembayaran yang sudah disepakati.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="faq" style="padding-top:32px">
+      <div class="wrap faq-grid">
+        <div class="faq-intro"><span class="kicker">FAQ</span><h2>Masih ada yang ingin ditanyakan?</h2><p>Baca informasi singkat berikut sebelum mengisi formulir pemesanan.</p><a href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer" style="font-weight:800;text-decoration:underline;text-underline-offset:4px">Buka formulir pemesanan ↗</a></div>
+        <div class="faq-list">
+          <details><summary>Apakah harganya selalu Rp6.000?</summary><p>Rp6.000 adalah harga mulai. Harga akhir dapat berbeda sesuai fitur, tingkat kesulitan, dan rincian pekerjaan yang disepakati melalui proses pemesanan.</p></details>
+          <details><summary>Apa saja yang termasuk dalam paket?</summary><p>Format dasar paket adalah aplikasi yang sudah dibuat dan dokumen penjelasan lengkap mengenai aplikasi. Rincian spesifik dikonfirmasi berdasarkan informasi yang diisi di formulir.</p></details>
+          <details><summary>Bagaimana dengan janji membayar tepat waktu?</summary><p>File tugas dikirim sesuai ketentuan pembayaran yang disepakati. File tidak dapat dibuka kecuali pemesan menyatakan janji untuk membayar tepat waktu.</p></details>
+          <details><summary>Apakah saya perlu memahami isi aplikasinya?</summary><p>Ya. Pelajari kode, pahami fungsi tiap bagian, dan sesuaikan proyek dengan instruksi guru. Kamu sebaiknya mampu menjelaskan proses kerja aplikasi dengan bahasamu sendiri.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="wrap">
+        <div class="cta-panel">
+          <div class="cta-text"><h2>Siap membahas kebutuhan proyek Flask?</h2><p>Isi formulir, tuliskan detail tugas, lalu konfirmasi ketentuan dan harga sebelum melanjutkan.</p></div>
+          <a class="btn" href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Pesan lewat Google Form <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-row">
+        <a class="brand" href="#beranda">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6.2l-5.2 8.4A2.2 2.2 0 0 0 6.7 21h10.6a2.2 2.2 0 0 0 1.9-3.4L14 9.2V3"/><path d="M7.5 15h9"/></svg></span>
+          <span>ARJ-FLASK-CRAFT<small>ANJELA-RINA-JASON</small></span>
+        </a>
+        <div class="footer-note">Punya kebutuhan proyek? <a href="https://forms.gle/SSovFBGymCynzaPj8" target="_blank" rel="noopener noreferrer">Isi formulir pemesanan</a>.</div>
+      </div>
+      <div class="copyright">© <span id="year">2026</span> ARJ-FLASK-CRAFT. Aplikasi dan dokumentasi mengikuti rincian pesanan yang disepakati.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigasi responsif untuk layar kecil.
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Tutup navigasi' : 'Buka navigasi');
+      });
+      navLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.setAttribute('aria-label', 'Buka navigasi');
+        });
+      });
+    }
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
